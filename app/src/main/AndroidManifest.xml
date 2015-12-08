@@ -23,6 +23,11 @@
             android:label="@string/title_activity_grammer"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".QuestionView"
+            android:label="@string/title_activity_question_view"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

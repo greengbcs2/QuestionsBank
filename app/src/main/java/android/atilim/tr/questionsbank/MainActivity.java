@@ -9,8 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     public static String[] mainMenuList={"VOCABULARY","GRAMMER","YDS SORULARI","SÖZLÜK","AYARLAR"};
@@ -23,7 +27,19 @@ public class MainActivity extends AppCompatActivity {
         final ListView listView=(ListView) findViewById(R.id.listView);
         customAdapter=new CustomAdapter(this, mainMenuList);
         listView.setAdapter(customAdapter);
+        // Item Click Listener for the listview
+        AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
+                if(position==0){
+                 Intent intent = new Intent(MainActivity.this, Grammer.class);
+                 startActivity(intent);
+                }
+            }
+        };
 
+        // Setting the item click listener for the listview
+        listView.setOnItemClickListener(itemClickListener);
 
     }
 

@@ -67,14 +67,14 @@ class CustomAdapter extends BaseAdapter {
         holder.tv.setBackgroundColor(getRandomColor(position));
 
 
-        rowView.setOnClickListener(new OnClickListener() {
+        /*rowView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(context, Grammer.class);
                activity.startActivity(intent);
             }
-        });
+        });*/
         return rowView;
     }
 
