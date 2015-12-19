@@ -30,6 +30,7 @@ public class Questions {
 
     public void setTotalOfQuestions(int totalOfQuestions) {
         this.totalOfQuestions = totalOfQuestions;
+        setQuestionText("jkj");
     }
 
     public String[] getAnswers() {
