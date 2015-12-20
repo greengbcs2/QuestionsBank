@@ -33,7 +33,28 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
                 if(position==0){
                  Intent intent = new Intent(MainActivity.this, Grammer.class);
+                    intent.putExtra("position",position);
                  startActivity(intent);
+                }
+                else if(position==1){
+                    Intent intent = new Intent(MainActivity.this, Grammer.class);
+                    intent.putExtra("position",position);
+                    startActivity(intent);
+                }
+                else if(position==2){
+                    Intent intent = new Intent(MainActivity.this, Grammer.class);
+                    intent.putExtra("position",position);
+                    startActivity(intent);
+                }
+                else if(position==3){
+                    Intent intent = new Intent(MainActivity.this, Grammer.class);
+                    intent.putExtra("position",position);
+                    startActivity(intent);
+                }
+                else if(position==4){
+                    Intent intent = new Intent(MainActivity.this, Grammer.class);
+                    intent.putExtra("position",position);
+                    startActivity(intent);
                 }
             }
         };
