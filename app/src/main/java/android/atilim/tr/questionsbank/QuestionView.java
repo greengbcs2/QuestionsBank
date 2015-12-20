@@ -77,19 +77,21 @@ public class QuestionView extends AppCompatActivity {
             DBAdapter dbAdapter = new DBAdapter().GetWritableDatabase(dBHelper);
             dbAdapter = dbAdapter.GetWritableDatabase(dBHelper);
             Cursor cursor = dbAdapter.GetQuestionsByQuestionCategoryId(position);
+            Cursor cursorOptions = dbAdapter.GetQuestionsByQuestionCategoryId(position);
 
             if (cursor != null) {
                 cursor.moveToFirst();
                 questionsList = new ArrayList<Questions>();
                 int i=0;
                 while (!cursor.isAfterLast()) {
-                    question=new(cursor.getString(cursor.getColumnIndex("Question")),questionNumber +1,30,);
+                    question=new Questions(cursor.getString(cursor.getColumnIndex("Question")),questionNumber +1,30,cursorOptions.getString(cursorOptions.getColumnIndex("Option"))));
                     questionsList.add(question);
                     cursor.moveToNext();
                 }
+                
 
                 cursor.close();
-               
+
             }
         } catch (Exception e) {
             Log.e("tag", e.getMessage());
