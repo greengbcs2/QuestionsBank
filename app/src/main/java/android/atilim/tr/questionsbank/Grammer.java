@@ -22,7 +22,7 @@ public class Grammer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         int position;
-        
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -35,6 +35,7 @@ public class Grammer extends AppCompatActivity {
         }
 
         try {
+            Log.d("ulas", String.valueOf(position));
             DatabaseHelper dBHelper = new DatabaseHelper(Grammer.this);
             DBAdapter dbAdapter = new DBAdapter().GetWritableDatabase(dBHelper);
             dbAdapter = dbAdapter.GetWritableDatabase(dBHelper);
@@ -46,7 +47,7 @@ public class Grammer extends AppCompatActivity {
                 int i=0;
                 while (!cursor.isAfterLast()) {
 
-                    questionCategoryList.add(cursor.getString(cursor.getColumnIndex("Question")));
+                    questionCategoryList.add(cursor.getString(cursor.getColumnIndex("CategoryName")));
                     Log.d("", "onCreate: " + questionCategoryList.get(i++));
                     cursor.moveToNext();
                 }
@@ -70,6 +71,7 @@ public class Grammer extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
                 if(position==0){
                     Intent intent = new Intent(Grammer.this, QuestionView.class);
+                    intent.putExtra("position",position);
                     startActivity(intent);
                 }
             }

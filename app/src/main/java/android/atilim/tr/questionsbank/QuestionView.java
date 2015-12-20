@@ -23,7 +23,10 @@ public class QuestionView extends AppCompatActivity {
     private int currentQuestionNumber;
     private int trueNumberofQuestions;
     private int falseQuestionNumber;
-    private ArrayList<String> questionCategoryList;
+    private ArrayList<Questions> questionsList;
+    private int position;
+    private Questions question;
+    private int questionNumber;
 
     public int getCurrentQuestionNumber() {
         return currentQuestionNumber;
@@ -47,6 +50,17 @@ public class QuestionView extends AppCompatActivity {
         ControllerObject controllerObject=new ControllerObject();
         arrayOfQuestions=controllerObject.getQuestions();
 
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                position=0;
+            } else {
+                position= extras.getInt("position");
+            }
+        } else {
+            position= (int) savedInstanceState.getSerializable("position");
+        }
+
        TextView questionText=(TextView) findViewById(R.id.question_text);
          /*TextView currentQuestionText=(TextView) findViewById(R.id.question_number_text);
         TextView falseNumberofQuestions=(TextView) findViewById(R.id.false_number_text );
@@ -62,20 +76,20 @@ public class QuestionView extends AppCompatActivity {
             DatabaseHelper dBHelper = new DatabaseHelper(QuestionView.this);
             DBAdapter dbAdapter = new DBAdapter().GetWritableDatabase(dBHelper);
             dbAdapter = dbAdapter.GetWritableDatabase(dBHelper);
-            Cursor cursor = dbAdapter.GetQuestionsByQuestionCategoryId(1);
+            Cursor cursor = dbAdapter.GetQuestionsByQuestionCategoryId(position);
 
             if (cursor != null) {
                 cursor.moveToFirst();
-                questionCategoryList = new ArrayList<String>();
+                questionsList = new ArrayList<Questions>();
                 int i=0;
                 while (!cursor.isAfterLast()) {
-
-                    questionCategoryList.add(cursor.getString(cursor.getColumnIndex("Question")));
-                    Log.d("", "onCreate: "+questionCategoryList.get(i++));
+                    question=new(cursor.getString(cursor.getColumnIndex("Question")),questionNumber +1,30,);
+                    questionsList.add(question);
                     cursor.moveToNext();
                 }
 
                 cursor.close();
+               
             }
         } catch (Exception e) {
             Log.e("tag", e.getMessage());
