@@ -67,8 +67,11 @@ public class QuestionView extends AppCompatActivity {
             if (cursor != null) {
                 cursor.moveToFirst();
                 questionCategoryList = new ArrayList<String>();
+                int i=0;
                 while (!cursor.isAfterLast()) {
+
                     questionCategoryList.add(cursor.getString(cursor.getColumnIndex("Question")));
+                    Log.d("", "onCreate: "+questionCategoryList.get(i++));
                     cursor.moveToNext();
                 }
 
@@ -80,8 +83,7 @@ public class QuestionView extends AppCompatActivity {
 
 
 
-
-        questionText.setText((CharSequence) questionCategoryList);
+        questionText.setText((CharSequence) questionCategoryList.get(1));
       //  currentQuestionText.setText(currentQuestionNumber);
        // falseNumberofQuestions.setText(getFalseQuestionNumber());
        // trueNumberofQuestions.setText(getTrueNumberofQuestions());
