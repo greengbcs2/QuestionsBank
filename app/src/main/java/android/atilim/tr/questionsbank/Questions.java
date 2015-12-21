@@ -8,12 +8,23 @@ public class Questions {
     private String[] answers=new String[5];
     private int totalOfQuestions;
     private int idQuestion;
+    private String rightAnswer;
 
-    public Questions(String questionText, int idQuestion, int totalOfQuestions, String[] answers) {
+    public String getRightAnswer() {
+        return rightAnswer;
+    }
+
+    public void setRightAnswer(String rightAnswer) {
+        this.rightAnswer = rightAnswer;
+    }
+
+    public Questions(String questionText, int idQuestion, int totalOfQuestions, String[] answers,String rightAnswer) {
         this.questionText = questionText;
         this.idQuestion = idQuestion;
         this.totalOfQuestions = totalOfQuestions;
         this.answers = answers;
+
+        this.rightAnswer=rightAnswer;
     }
 
     public int getIdQuestion() {

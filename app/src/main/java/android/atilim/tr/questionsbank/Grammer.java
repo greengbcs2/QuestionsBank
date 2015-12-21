@@ -1,4 +1,4 @@
-package android.atilim.tr.questionsbank;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               package android.atilim.tr.questionsbank;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -34,7 +34,7 @@ public class Grammer extends AppCompatActivity {
             position= (int) savedInstanceState.getSerializable("position");
         }
 
-        try {
+      /*  try {
             Log.d("ulas", String.valueOf(position));
             DatabaseHelper dBHelper = new DatabaseHelper(Grammer.this);
             DBAdapter dbAdapter = new DBAdapter().GetWritableDatabase(dBHelper);
@@ -56,15 +56,15 @@ public class Grammer extends AppCompatActivity {
             }
         } catch (Exception e) {
             Log.e("tag", e.getMessage());
-        }
+        }*/
         
         ListView listView=(ListView) findViewById(R.id.listView);
         //String[] tempArray = questionCategoryList.toArray(new String[questionCategoryList.size()]);
 
-        String[] array = new String[questionCategoryList.size()];
-        for(int i = 0; i < questionCategoryList.size(); i++) array[i] = questionCategoryList.get(i);
+      //  String[] array = new String[questionCategoryList.size()];
+     //   for(int i = 0; i < questionCategoryList.size(); i++) array[i] = questionCategoryList.get(i);
 
-        customAdapter=new CustomAdapter(this, array);
+        customAdapter=new CustomAdapter(this, mainMenuList);
         listView.setAdapter(customAdapter);
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
             @Override
@@ -80,4 +80,4 @@ public class Grammer extends AppCompatActivity {
 
     }
 
-}
+}                            
