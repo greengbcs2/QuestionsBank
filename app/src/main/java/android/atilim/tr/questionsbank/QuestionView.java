@@ -23,10 +23,10 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 public class QuestionView extends AppCompatActivity {
-    private  ArrayList<Questions> arrayOfQuestions;
+
     private int currentQuestionNumber;
-    private int trueNumberofQuestions;
-    private int falseQuestionNumber;
+    private int numberOfTrueQuestions;
+    private int numberOfFalseQuestions;
     private ArrayList<Questions> questionsList;
     private int position;
     private Questions question;
@@ -36,18 +36,13 @@ public class QuestionView extends AppCompatActivity {
     private TextView optionB;
     private TextView optionC;
     private TextView optionD;
+    private int selectedOption;
 
     public int getCurrentQuestionNumber() {
         return currentQuestionNumber;
     }
 
-    public int getTrueNumberofQuestions() {
-        return trueNumberofQuestions;
-    }
 
-    public int getFalseQuestionNumber() {
-        return falseQuestionNumber;
-    }
 
     private String[] answers;
 
@@ -56,8 +51,6 @@ public class QuestionView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        ControllerObject controllerObject=new ControllerObject();
-        arrayOfQuestions=controllerObject.getQuestions();
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -74,8 +67,8 @@ public class QuestionView extends AppCompatActivity {
        final TextView currentQuestionText=(TextView) findViewById(R.id.question_number_text);
         final TextView falseNumberofQuestions=(TextView) findViewById(R.id.false_number_text );
         final TextView trueNumberofQuestions=(TextView) findViewById(R.id.true_number_text );
-        Button buttonNext=(Button)findViewById(R.id.button);
-        Button buttonPrevious=(Button)findViewById(R.id.button2);
+        final Button buttonNext=(Button)findViewById(R.id.button);
+
         optionA=(TextView) findViewById(R.id.a_text);
         optionB=(TextView) findViewById(R.id.b_text);
         optionC=(TextView) findViewById(R.id.c_text);
@@ -93,30 +86,40 @@ public class QuestionView extends AppCompatActivity {
             dbAdapter = dbAdapter.GetWritableDatabase(dBHelper);
             Cursor cursor = dbAdapter.GetQuestionsByQuestionCategoryId(position+1);
 
-
+            questionNumber=1;
             if (cursor != null) {
                 cursor.moveToFirst();
                 questionsList = new ArrayList<Questions>();
 
-                String []optionsArray=new String[5];
+                String []optionsArray;
+                int temp=0;
                 while (!cursor.isAfterLast()) {
-                    Cursor cursorOptions = dbAdapter.GetQuestionOptionsByQuestionId(position+1);
+                    optionsArray=new String[5];
+                    Cursor cursorOptions = dbAdapter.GetQuestionOptionsByQuestionId(questionNumber);
                     cursorOptions.moveToFirst();
                     String questionTextLine=cursor.getString(cursor.getColumnIndex("Question"));
-                    String answerQuestion=cursor.getString(cursor.getColumnIndex("Answer"));
+                    String answerQuestion= cursor.getString(cursor.getColumnIndex("Answer"));
+                    int answerId=0;
+                    answerId=answerTextToId(answerQuestion);
+
+
                    for(int i=0;i<5;i++) {
                        int optionNumber=cursorOptions.getColumnIndex("Option");
                         optionsArray[i]=cursorOptions.getString(optionNumber);
                        cursorOptions.moveToNext();
-                       Log.d("ulas options",optionsArray[i]);
+                      // Log.d("ulas options",optionsArray[i]);
                     }
-                    Log.d("ulas",questionTextLine);
-                    Log.d("ulas", String.valueOf(questionNumber));
-                    question=new Questions(cursor.getString(cursor.getColumnIndex("Question")),questionNumber++,30,optionsArray,answerQuestion);
+                    //Log.d("ulas",questionTextLine);
+                    Log.d("ulas ", "ulas 0000 "+optionsArray[0]);
+                    question=new Questions(cursor.getString(cursor.getColumnIndex("Question")),questionNumber++,30,optionsArray,answerId);
                     questionsList.add(question);
+                   // Log.d("ulas ", "ulas 111   " + questionsList.get(temp).getAnswers()[1]);
+                    temp++;
                     cursor.moveToNext();
                 }
-                
+                /*for(int j=0;j<questionsList.size();j++){
+                    Log.d("ulas", "ulas 000 arrayq "+questionsList.get(j).getAnswers()[1]);
+                }*/
 
                 cursor.close();
 
@@ -127,60 +130,80 @@ public class QuestionView extends AppCompatActivity {
 
 
 
+
         questionText.setText(questionsList.get(0).getQuestionText());
-        currentQuestionText.setText(String.valueOf(questionsList.get(0).getIdQuestion()));
-        falseNumberofQuestions.setText("0");
-        trueNumberofQuestions.setText("0");
+        currentQuestionText.setText("QST"+String.valueOf(questionsList.get(0).getIdQuestion()));
+        falseNumberofQuestions.setText("False:0");
+        trueNumberofQuestions.setText("True:0");
         optionA.setText("A)"+questionsList.get(0).getAnswers()[0]);
         optionB.setText("B)"+questionsList.get(0).getAnswers()[1]);
         optionC.setText("C)"+questionsList.get(0).getAnswers()[2]);
-        optionD.setText("D)"+questionsList.get(0).getAnswers()[3]);
-        optionE.setText("E)"+questionsList.get(0).getAnswers()[4]);
+        optionD.setText("D)" + questionsList.get(0).getAnswers()[3]);
+        optionE.setText("E)" + questionsList.get(0).getAnswers()[4]);
 
         optionA.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                setOthersWhite();
+            public void onClick(View v) {setOthersWhite();
                 optionA.setBackgroundColor(Color.GREEN);
+                selectedOption=1;
             }
         });
         optionB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {setOthersWhite();
-                optionB.setBackgroundColor(Color.GREEN);
+                optionB.setBackgroundColor(Color.GREEN);selectedOption=2;
             }
         });
         optionC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {setOthersWhite();
-                optionC.setBackgroundColor(Color.GREEN);
+                optionC.setBackgroundColor(Color.GREEN);selectedOption=3;
             }
         });
         optionD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {setOthersWhite();
-                optionD.setBackgroundColor(Color.GREEN);
+                optionD.setBackgroundColor(Color.GREEN);selectedOption=4;
             }
         });
         optionE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {setOthersWhite();
-                optionE.setBackgroundColor(Color.GREEN);
+                optionE.setBackgroundColor(Color.GREEN);selectedOption=5;
             }
         });
+      /*  for(int j=0;j<questionsList.size();j++){
+            Log.d("ulas", "ulas arrayq "+questionsList.get(j).getAnswers()[1]);
+        }*/
 
+        if(currentQuestionNumber-1==questionsList.size())
+            buttonNext.setClickable(false);
         buttonNext.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
+                setOthersWhite();
                 currentQuestionNumber++;
-                String currentQuestionTextSt=questionsList.get(currentQuestionNumber).getQuestionText();
-                questionText.setText(currentQuestionTextSt);
-                currentQuestionText.setText(String.valueOf(questionsList.get(currentQuestionNumber).getIdQuestion()));
-                falseNumberofQuestions.setText("0");
-                trueNumberofQuestions.setText("test");
-                String a[]=questionsList.get(currentQuestionNumber).getAnswers();
-                optionA.setText("A)"+a[0]);
-                optionB.setText("B)"+questionsList.get(currentQuestionNumber).getAnswers()[1]);
+                int size=questionsList.size();
+                if(currentQuestionNumber+1==questionsList.size())
+                    buttonNext.setEnabled(false);
+
+
+                if(questionsList.get(currentQuestionNumber).getRightAnswer()==selectedOption)
+                    numberOfTrueQuestions++;
+                else
+                numberOfFalseQuestions++;
+                questionText.setText(questionsList.get(currentQuestionNumber).getQuestionText());
+                currentQuestionText.setText("QST: "+String.valueOf(questionsList.get(currentQuestionNumber).getIdQuestion()));
+                falseNumberofQuestions.setText("False: " + String.valueOf(numberOfFalseQuestions));
+                trueNumberofQuestions.setText("True: "+String.valueOf(numberOfTrueQuestions));
+                //String a[]=questionsList.get(currentQuestionNumber).getAnswers();
+
+
+               // Log.d("ulas","ozan 2222  "+currentQuestionNumber+" ---"+temp2+" ---"+questionsList.get(temp2).getAnswers()[0]);
+                optionA.setText("A)" + questionsList.get(currentQuestionNumber).getAnswers()[0]);
+                optionB.setText("B)" + questionsList.get(currentQuestionNumber).getAnswers()[1]);
                 optionC.setText("C)"+questionsList.get(currentQuestionNumber).getAnswers()[2]);
                 optionD.setText("D)"+questionsList.get(currentQuestionNumber).getAnswers()[3]);
                 optionE.setText("E)"+questionsList.get(currentQuestionNumber).getAnswers()[4]);
@@ -194,6 +217,22 @@ public class QuestionView extends AppCompatActivity {
 
 
     }
+
+    private int answerTextToId(String answerQuestion) {
+        int answerId = 1;
+        if(answerQuestion.equalsIgnoreCase("a"))
+            answerId=1;
+        else if(answerQuestion.equalsIgnoreCase("b"))
+            answerId=2;
+        else if(answerQuestion.equalsIgnoreCase("c"))
+            answerId=3;
+        else if(answerQuestion.equalsIgnoreCase("d"))
+            answerId=4;
+        else if(answerQuestion.equalsIgnoreCase("e"))
+            answerId=5;
+        return answerId;
+    }
+
     private void setOthersWhite() {
         optionA.setBackgroundColor(Color.TRANSPARENT);
         optionB.setBackgroundColor(Color.TRANSPARENT);
